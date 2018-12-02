@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>bootstrap4</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js"></script>
+  </head>
+  <body>
+    <div id="summernote"></div>
+    <script>
+
+      $(document).ready(function() {
+        $('#summernote').summernote({
+          toolbar: [
+            ['mybutton', ['hello']]
+          ],
+          buttons: {
+            hello: HelloButton
+          },
+          callbacks : {
+            onImageUpload: function(image) {
+              uploadImage(image[0]);
+            } 
+           }
+        });
+      });
+      var HelloButton = function (context) {
+        var ui = $.summernote.ui;
+        // create button
+        var button = ui.button({
+          contents: 'Upload',
+          tooltip: 'hello',
+          click: function () {
+            upload();
+          }
+      });
+
+  return button.render();   // return button as jquery object
+}
+    function upload(){
+      const input = document.createElement("input");
+      input.type = "file";
+      input.click();
+      var form;
+      $(input).change(function (event) {
+        form = new FormData();
+        form.append('fileUpload', event.target.files[0]); // para apenas 1 arquivo
+        $.ajax({
+            url: '/uploader', // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (data) {
+            }
+        });
+      
+      });
+    }
+    </script>
+  </body>
+</html
